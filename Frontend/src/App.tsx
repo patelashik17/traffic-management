@@ -247,6 +247,7 @@ const App = () => {
     setShowModal(false);
     setError("");
     setNotice("");
+    setIntersectionName("");
 
     if (!intersectionId) {
       return;

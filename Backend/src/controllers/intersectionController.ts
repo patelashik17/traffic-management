@@ -149,3 +149,29 @@ export const emergency = async (req: any, res: Response) => {
     },
   });
 };
+
+export const resetIntersection = async (req: Request | any, res: Response) => {
+  const id = parseId(req.params.id);
+
+  if (!id) {
+    return res.status(400).json({ message: "Invalid ID" });
+  }
+
+  const intersection = await Intersection.findById(id);
+
+  if (!intersection) {
+    return res.status(404).json({
+      message: "Intersection not found",
+    });
+  }
+
+  await TimingPlan.updateMany(
+    { intersectionId: intersection._id },
+    { $set: { active: false } },
+  );
+
+  return res.status(200).json({
+    message: "Intersection reset successfully",
+    intersectionId: intersection._id,
+  });
+};
